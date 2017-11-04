@@ -80,7 +80,8 @@ module.exports = class Server {
         //配置用户
         Logger.info("加载404及500...");
         this.app.use(function (req, res, next) {
-            let err = new yizo.BaseError(yizo.Code.API_NOTFOUND);
+
+            let err = new JikeJs.BaseError(JikeJs.Code.API_NOTFOUND);
             err.detail = "请正确调用接口";
             err.status = '404';
             next(err);
@@ -90,6 +91,9 @@ module.exports = class Server {
         this.app.use(function (err, req, res, next) {
             res.locals.message = err.message;
             res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+
+            console.log(err);
             res.status(err.status || 500)
             if ("code" in err && err.code) {
                 res.json({

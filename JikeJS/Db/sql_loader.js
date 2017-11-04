@@ -1,7 +1,6 @@
 let fs = require("fs");
 let path = require("path");
-
-
+let js_beautify = require("../Library/js_beautify");
 module.exports = function loadDBsql() {
 
     //获取app_path下的所有项目
@@ -9,7 +8,7 @@ module.exports = function loadDBsql() {
     let sqls = {};
     let sqlsArr  = {};
     for (let app of apps) {
-      console.log(APP_PATH+app+'/Common/sqls')
+        if(['Common','Runtime','Conf'].indexOf(app)!=-1) continue;
         if(fs.existsSync(APP_PATH+app+'/Common/sqls/')){
             let sqldir = path.join(APP_PATH,app+'/Common/sqls/');
             let files = fs.readdirSync(sqldir);
@@ -18,8 +17,12 @@ module.exports = function loadDBsql() {
                 //加载每一个文件的sql语句
                 let fileName = file.substring(0, file.indexOf('.'));
                 //获取文件的内容   匹配所有sql及sql变量名称
-                let values = fs.readFileSync(sqldir + file).toString().match(/[^#]#[^#]+/gi) || [];
-                // console.log(values);
+                let filecontent = fs.readFileSync(sqldir + file).toString();
+
+                let values = filecontent.match(/[^#]#[^#]+/gi) || [];
+                console.log(filecontent.split(/((##[^\n]+(\n))*(#[^\n]+)(\S)+(\n))/gi).filter(function(val){
+                  return !(!val || val=='');
+                }));
                 //拆分所有sql及sql变量名称
                 let sql_arr = values.map(str => str.match(/#\w+/));
                 sqlsArr[fileName] = {};
@@ -31,13 +34,13 @@ module.exports = function loadDBsql() {
                     sql = sql.replace(item[0], '').replace(/\s+/ig, ' ').trim();
                     let name = item[0];
                     name = name.replace(/#/ig, '');
-                    sqlsArr[fileName][name] = 'String';
+                    sqlsArr[fileName][name] = sql;
                     sqls[fileName][name] = sql;
                 });
             }
         }
     }
-    console.log(sqlsArr,sqls);
+    console.log(sqlsArr);
     saveSqlTypeings(APP_PATH+'../'+'typings/globals/JikeJs/sqls.d.ts',sqlsArr)
     global.sqls = sqls;
 };
@@ -46,7 +49,6 @@ module.exports = function loadDBsql() {
 function saveSqlTypeings(file_path,sqlsArr){
 
   let content = 'declare let sqls:'+JSON.stringify(sqlsArr);
-  content = content.replace(/"/g,'');
-  content = content.replace(/([{},])/g,'$1\r\n\t')
+  content = js_beautify(content);
   fs.writeFileSync(file_path,content)
 }
