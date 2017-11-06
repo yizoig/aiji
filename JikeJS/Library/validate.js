@@ -1,6 +1,6 @@
 let { ValidationError, BaseError } = require("./error");
 let { Code } = require("../Code/code");
-let lange = require(APP_PATH + "/Common/language/zh-cn/index") ||{};
+let lange = require(APP_PATH + "/Common/language/zh-cn/index") || {};
 
 const Validate = (function () {
   function Validate() {
@@ -12,18 +12,17 @@ const Validate = (function () {
   Validate.EXISTS_VALIDATE = 0; //或者0 存在字段就验证
   Validate.VALUE_VALIDATE = 1; //或者1 值不为空的时候验证
   Validate.MUST_VALIDATE = 2; //或者2 必须验证
-  let validateData = {};
-  let error = null;
+  let validateData;
+  let error;
   /**
    * params 参数
    * validate 参数验证条件
    */
   Validate.autoCheck = (params, validate) => {
-
-
+    //清空参数和错误信息
+    validateData = error = {};
     //遍历验证条件
     for (let validKey in validate) {
-
       //当存在指定字段的验证条件和验证参数时 才进行验证
       if (validate[validKey] || validate[validKey].length != 0) {
 
@@ -32,70 +31,99 @@ const Validate = (function () {
          * 
          * verifyType 存在字段就验证||必须验证||值不为空的时候验证
          */
-        let { mode, rule } = validate[validKey];
+        let { type, mode, rule } = validate[validKey];
 
         switch (mode) {
           case 0: {
             //存在就验证
             if (validKey in params) {
-              Validate._validateField(validKey, rule, params[validKey]);
+              Validate._validateField(type, validKey, rule, params[validKey]);
             }
             break;
           }
           case 1: {
-
             //当参数存在不为空的时候
-            if (validKey in params && (!(typeof params[validKey] == 'string') || params[validKey].trim() != '')) {
-              Validate._validateField(validKey, rule, params[validKey]);
+            if (validKey in params && params[validKey] != 0 && !params[validKey]) {
+              Validate._validateField(type, validKey, rule, params[validKey]);
             }
             break;
           }
           case 2:
           default: {
             //必须验证
-            Validate._validateField(validKey, rule, params[validKey]);
+            Validate._validateField(type, validKey, rule, params[validKey]);
             break;
           }
         }
       }
     }
-    if (error) {
+    //如果存在错误  就返回参数错误异常
+    if (Object.keys(error).length > 0) {
       //参数错误
       throw new ValidationError(error);
     }
-    //合并参数
-    return Object.assign(params,validateData);
+    //验证成功后 返回验证成功的参数和没有验证的参数
+    return Object.assign(params, validateData);
   };
+  /**
+   * 验证参数的类型是不是想要的类型
+   */
+  Validate._validateFiledType = (fieldKey, fieltype, fieldValue) => {
+
+
+    switch (fieltype) {
+      case "number": {
+        let type =Object.prototype.toString.call(fieldValue);
+        if(type == '[object String]' && fieldValue.match(/^([+|-]?\d+\.?\d*)$/g)!=null){
+          fieldValue= parseInt(fieldValue);
+          break;
+        }
+      }
+      default: {
+        try {
+          let type = '[object ' + fieltype.replace(/\b(\w)(\w*)/g, function ($0, $1, $2) {
+            return $1.toUpperCase() + $2.toLowerCase();
+          }) + ']';
+          if (Object.prototype.toString.call(fieldValue) != type) {
+            throw Error();
+          }
+        } catch (e) {
+          error[fieldKey] = (lange['paramsTypeErr'] || "参数必须是") + fieltype;
+          return false;
+        }
+      }
+    }
+    return true;
+  }
   /**
    * 字段验证条件 字段值
    * fieldKey 字段名
    * fieldVerify 字段验证条件
    * fieldValue 字段值
    */
-  Validate._validateField = (fieldKey, fieldVerify, fieldValue) => {
+  Validate._validateField = (fieldType, fieldKey, fieldVerify, fieldValue) => {
 
+    //1.先验证参数是不是想要的类型
+    if (fieldType != 'any') {
+      //如果验证失败就不用继续验证
+      if (!Validate._validateFiledType(fieldKey, fieldType, fieldValue)) {
+        return;
+      }
+    }
     //遍历字段的驗證條件
     for (let fieldVerifyItem of fieldVerify) {
-
-
+      //先验证参数类型是否合法
       let [ruleValue, error, rule = 'regex'] = fieldVerifyItem;
-      try {
-        ruleValue = JSON.parse(ruleValue);
-      } catch (e) {
-        console.log();
-      } finally {
-        //如果驗證失敗就設置驗證錯誤提示信息
-        if (!Validate._validateItem(fieldValue, ruleValue, rule)) {
-          if (!error) {
-            error = {};
-          }
-          error[fieldKey] = lange[error];
-        }
+      //如果驗證失敗就設置驗證錯誤提示信息
+      if (!Validate._validateItem(fieldValue, ruleValue, rule)) {
+        console.log(lange);
+        error[fieldKey] = lange[error] || "参数错误";
       }
+
     }
     //全部驗證完  並且沒有指定字段的錯誤信息 就報存數據
     if (validateData.hasOwnProperty(fieldKey)) {
-     validateData[fieldKey] = fieldValue;
+      validateData[fieldKey] = fieldValue;
     }
   };
   /**

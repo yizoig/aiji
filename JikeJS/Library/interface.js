@@ -69,13 +69,7 @@ class Interface {
             req.body || {},
             req.files || {},
           );
-          for (let key in params) {
-
-            try {
-              params[key] = JSON.parse(params[key])
-            } catch (e) { }
-          }
-          //當存在參數驗證條件時 对参数进行验证
+         //當存在參數驗證條件時 对参数进行验证
           if ("verify" in args) {
             let type = req.header('type');
             params = Validate.autoCheck(params, args.verify);
