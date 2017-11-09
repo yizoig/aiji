@@ -7,7 +7,7 @@ import { Api, method as m, Number, Boolean, String,TimeStamp } from './Api.d';
  */
 interface list extends Api{
   name:"/account/teacher",
-  method:m.get,
+  method:m.GET,
   params:{
     page?:Number,//页码 默认0
     exeryPage?:Number,//每一页的条数

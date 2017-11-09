@@ -6,8 +6,8 @@ import { Api, method as m, Number, Boolean, String,TimeStamp } from './Api.d';
  * 获取所有的学生
  */
 interface list extends Api{
-  name:"/account/student",
-  method:m.get,
+  name:"/student",
+  method:m.GET,
   params:{
     page?:Number,//页码 默认0
     exeryPage?:Number,//每一页的条数
@@ -25,8 +25,8 @@ interface list extends Api{
  * 创建学生
  */
 interface creater extends Api{
-  name:"/account/student",
-  method:m.GET,
+  name:"/student",
+  method:m.POST,
   params:{
     account:String,//登录帐号
     name:String,//名称
@@ -39,7 +39,7 @@ interface creater extends Api{
  * 修改学生信息
  */
 interface update extends Api{
-  name:"/account/student",
+  name:"/student",
   method:m.PUT,
   params:{
     name:String,//名称
@@ -51,7 +51,7 @@ interface update extends Api{
  * 删除学生(不可以恢复)
  */
 interface del extends Api{
-  name:"/account/student",
+  name:"/student",
   method:m.DELETE,
   params: {
     id: Array<Number>//需要删除的id

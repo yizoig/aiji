@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2017/10/31 17:35:25                          */
+/* Created on:     2017/11/9 10:55:23                           */
 /*==============================================================*/
 
 
@@ -32,11 +32,12 @@ drop table if exists teacher;
 create table account
 (
    account_id           int not null,
+   name                 varchar(30),
    type                 varchar(20),
    account              varchar(20),
    password             varchar(32),
    gender               char,
-   _c                   timestamp,
+   _c                   int,
    _d                   tinyint,
    primary key (account_id)
 );
@@ -68,7 +69,7 @@ create table group_members
 (
    account_id           int,
    group_id             int,
-   _c                   timestamp
+   _c                   int
 );
 
 /*==============================================================*/
@@ -79,8 +80,8 @@ create table groups
    group_id             int not null,
    group_name           varchar(20),
    creater              int,
-   admins               varchar(20),
-   _c                   timestamp,
+   admins               varchar(100),
+   _c                   int,
    type                 tinyint,
    primary key (group_id)
 );
@@ -107,7 +108,7 @@ create table task
    creater              int,
    task_content         int,
    status               tinyint,
-   _c                   timestamp,
+   _c                   int,
    group_id             int,
    primary key (task_id)
 );
@@ -121,8 +122,8 @@ create table task_field
    title                varchar(40) not null,
    description          varchar(255) not null,
    options              varchar(255),
-   `default`            varchar(100),
-   `require`            tinyint,
+   default_value        varchar(100),
+   required             tinyint,
    sort                 smallint,
    task_id              char(32),
    primary key (field_id)
@@ -136,7 +137,7 @@ create table task_result
    result_id            int not null,
    task_id              char(32),
    creater              int,
-   _c                   timestamp,
+   _c                   int,
    add_ip               char(15),
    primary key (result_id)
 );

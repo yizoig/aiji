@@ -28,9 +28,9 @@ interface Api {
 
 }
 
-export class String<T extends number=any> { }
+export class String<MIN extends number=any,MAX extends number=any> { }
 
-export class Number { }
+export class Number<S extends number=any,E extends number=any> { }
 
 export class Boolean { }
 

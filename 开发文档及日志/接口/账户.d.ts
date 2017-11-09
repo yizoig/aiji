@@ -17,7 +17,7 @@ interface setPwd extends Api {
 /**
  * 修改个人密码
  */
-interface setPwd extends Api {
+interface updatePwd extends Api {
   name: "/account/pwd",
   method: m.PUT,
   params: {
