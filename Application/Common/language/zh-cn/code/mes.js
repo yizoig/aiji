@@ -37,7 +37,7 @@ module.exports = {
   },
   //密码错误
   PASSWORD_ERR: {
-    mes: "账户已被禁用"
+    mes: "密码错误"
   },
 
   NOT_FOUND_ERR: {
@@ -66,8 +66,12 @@ module.exports = {
   UN_KNOWN_ERROR: {
     mes: "未知错误"
   },
-  DEPT_NAME_REAPT:{
-    mes:"该系名已被占用",
-    detail:"请换名"
+  DEPT_NAME_REAPT: {
+    mes: "该系名已被占用",
+    detail: "请换名"
+  },
+  DEPT_NOT_EXISTS: {
+    mes: "系不存在",
+    detail: "请刷新后再试"
   }
 }

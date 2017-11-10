@@ -1,0 +1,35 @@
+##添加教师
+#creater
+insert into teacher set ?;
+
+##获取所有教师信息
+#list
+SELECT
+  teacher.account_id AS id,
+  department.dept_id AS dept,
+  department.`dept_name`,
+  name,
+  type,
+  account,
+  gender,
+  _c,
+  _d
+FROM teacher
+  join account ON teacher.account_id = account.account_id
+  join department ON teacher.dept_id = department.dept_id
+
+##获取条数
+#total
+SELECT count(teacher_id) AS total
+FROM teacher
+  JOIN account ON teacher.account_id = account.account_id
+  join department ON teacher.dept_id = department.dept_id
+
+
+##修改系
+#update
+update teacher set ? where ?;
+
+##删除系
+#del
+delete from teacher where account_id in (?);

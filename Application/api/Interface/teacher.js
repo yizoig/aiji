@@ -57,7 +57,7 @@ Interface.create('/teacher', TeacherController, [
     }
   }),
   /**
-   * 修改学生信息(不包括基础信息  基础信息在登录表中修改)
+   * 修改教师信息(不包括基础信息  基础信息在登录表中修改)
    */
   Route('/:id', 'put', 'update', {
     verify: {

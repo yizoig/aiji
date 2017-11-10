@@ -1,6 +1,6 @@
+/// <reference path="../../../typings/globals/JikeJs/index.d.ts" />
+
 module.exports = class extends JikeJs.Model {
-
-
   /**
    * 获取所有的学生
    */
@@ -39,6 +39,11 @@ module.exports = class extends JikeJs.Model {
     if (total > 0) {
       throw new JikeJs.BaseError(JikeJs.Code['ACCOUNT_EXISTS']);
     }
+    //判断系是否存在
+    [{ total }] = await this.query(sqls.department.total + " where dept_id=?", dept);
+    if (total > 0) {
+      throw new JikeJs.BaseError(JikeJs.Code['DEPT_NOT_EXISTS'])
+    }
     await this.startTrans();
     //创建登录信息
     let { insertId } = await this.query(sqls.account.creater, { account, password, name, gender, type: "student" });
@@ -60,6 +65,13 @@ module.exports = class extends JikeJs.Model {
       throw new JikeJs.BaseError(JikeJs.Code['NOT_CHANGE']);
     }
     let { dept } = data;
+    if (dept) {
+      //判断系是否存在
+      [{ total }] = await this.query(sqls.department.total + " where dept_id=?", dept);
+      if (total > 0) {
+        throw new JikeJs.BaseError(JikeJs.Code['DEPT_NOT_EXISTS'])
+      }
+    }
     let { affectedRows } = await this.query(sqls.student.update, { dept_id: dept }, { account_id: id });
     return affectedRows > 0;
   }
@@ -73,7 +85,7 @@ module.exports = class extends JikeJs.Model {
     await this.startTrans();
     //先删除
     let { affectedRows } = await this.query(sqls.student.del, ids);
-    let { affectedRows: affectedRows2 } = await this.query(sqls.account.del+" and type='student'", ids);
+    let { affectedRows: affectedRows2 } = await this.query(sqls.account.del + " and type='student'", ids);
     if (affectedRows >= 0 && affectedRows2 >= 0) {
       await this.commit();
       return true;

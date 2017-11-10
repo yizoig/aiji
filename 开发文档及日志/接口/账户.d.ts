@@ -21,8 +21,8 @@ interface updatePwd extends Api {
   name: "/account/pwd",
   method: m.PUT,
   params: {
-    old: String<6, 12>,//旧密码
-    password: String<6, 12>//新密码
+    oldPwd: String<6, 12>,//旧密码
+    newPwd: String<6, 12>//新密码
   },
   return: Boolean,
 }
@@ -31,10 +31,29 @@ interface updatePwd extends Api {
  */
 interface setHead extends Api {
   name: "/account/head",
-  method: m.POST,
+  method: m.PUT,
   params: {
     id: Number,
     image: File
   },
   return: Boolean
+}
+/**
+ * 登录接口  统一
+ */
+interface signIn extends Api {
+  name: "/account/signIn",
+  method: m.POST,
+  params: {
+    account: String,
+    password: String
+  },
+  return: {
+    id: Number,
+    name: String,
+    gender: 0 | 1,
+    dept?: Number,
+    dept_name: String,
+    _c: TimeStamp
+  }
 }

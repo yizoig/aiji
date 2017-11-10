@@ -13,3 +13,7 @@ select * from account
 ##删除数据
 #del
 delete from account where account_id in (?)
+
+##修改信息
+#update
+update account set ?
