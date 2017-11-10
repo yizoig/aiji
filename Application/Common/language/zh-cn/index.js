@@ -1,4 +1,4 @@
 module.exports = {
-    ValueNotNullErr:"值不能为空",
-    paramsNotNullErr:'参数不能为空'
+  genderErr: "性别必须是0或1",
+  paramsNotNullErr: '参数不能为空'
 };

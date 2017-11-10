@@ -20,7 +20,8 @@ const Validate = (function () {
    */
   Validate.autoCheck = (params, validate) => {
     //清空参数和错误信息
-    validateData = error = {};
+    validateData = {};
+    error = {};
     //遍历验证条件
     for (let validKey in validate) {
       //当存在指定字段的验证条件和验证参数时 才进行验证
@@ -31,7 +32,7 @@ const Validate = (function () {
          * 
          * verifyType 存在字段就验证||必须验证||值不为空的时候验证
          */
-        let { type, mode, rule } = validate[validKey];
+        let { type, mode, rule = [] } = validate[validKey];
 
         switch (mode) {
           case 0: {
@@ -73,9 +74,8 @@ const Validate = (function () {
 
     switch (fieltype) {
       case "number": {
-        let type =Object.prototype.toString.call(fieldValue);
-        if(type == '[object String]' && fieldValue.match(/^([+|-]?\d+\.?\d*)$/g)!=null){
-          fieldValue= parseInt(fieldValue);
+        let type = Object.prototype.toString.call(fieldValue);
+        if (type == '[object String]' && fieldValue.match(/^([+|-]?\d+\.?\d*)$/g) != null) {
           break;
         }
       }
@@ -103,6 +103,8 @@ const Validate = (function () {
    */
   Validate._validateField = (fieldType, fieldKey, fieldVerify, fieldValue) => {
 
+
+    fieldValue = fieldType == "number" ? parseInt(fieldValue) : fieldValue;
     //1.先验证参数是不是想要的类型
     if (fieldType != 'any') {
       //如果验证失败就不用继续验证
@@ -113,18 +115,14 @@ const Validate = (function () {
     //遍历字段的驗證條件
     for (let fieldVerifyItem of fieldVerify) {
       //先验证参数类型是否合法
-      let [ruleValue, error, rule = 'regex'] = fieldVerifyItem;
+      let [ruleValue, errorMes, rule = 'regex'] = fieldVerifyItem;
       //如果驗證失敗就設置驗證錯誤提示信息
       if (!Validate._validateItem(fieldValue, ruleValue, rule)) {
-        console.log(lange);
-        error[fieldKey] = lange[error] || "参数错误";
+        error[fieldKey] = lange[errorMes] || "参数错误";
       }
 
     }
-    //全部驗證完  並且沒有指定字段的錯誤信息 就報存數據
-    if (validateData.hasOwnProperty(fieldKey)) {
-      validateData[fieldKey] = fieldValue;
-    }
+    validateData[fieldKey] = fieldValue;
   };
   /**
    * 验证参数的值和规则

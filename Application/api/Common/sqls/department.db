@@ -1,0 +1,11 @@
+##添加系
+#creater
+insert into department set ?;
+
+##修改系
+#update
+update department set ? where ?;
+
+##删除系
+#del
+delete from department where dept_id in (?);

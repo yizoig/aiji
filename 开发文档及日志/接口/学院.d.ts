@@ -38,8 +38,9 @@ interface creater extends Api {
  * 修改学院信息
  */
 interface update extends Api {
-  name: '/depts/:id',//在url传递学院的id
+  name: '/depts',
   params: {
+    id:String,//学院id
     name: String, //学院名
   }
   return: Boolean

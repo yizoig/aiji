@@ -3,6 +3,7 @@ let path = require("path");
 let js_beautify = require("../Library/js_beautify");
 module.exports = function loadDBsql() {
 
+    
     //获取app_path下的所有项目
     let apps = fs.readdirSync(APP_PATH);
     let sqls = {};
@@ -47,5 +48,6 @@ function saveSqlTypeings(file_path,sqlsJsContent){
 
   let content = 'declare let sqls:'+sqlsJsContent
   content = js_beautify(content);
+  fs.unlinkSync(file_path)
   fs.writeFileSync(file_path,content)
 }

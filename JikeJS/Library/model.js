@@ -7,12 +7,11 @@ module.exports = class Model extends Mysql {
     constructor(table) {
         super();
     }
-    fileter(data) {
-        console.log(data, 11)
+    filter(data) {
         for (let key in data) {
             let item = data[key]
             if (Object.prototype.toString.call(item) == "[object Array]" || Object.prototype.toString.call(item) == "[object Object]") {
-                item = this.fileter(item);
+                item = this.filter(item);
             } else {
                 if (Object.prototype.toString.call(item) == "[object Undefined]") {
                     delete data[key];
@@ -29,7 +28,7 @@ module.exports = class Model extends Mysql {
      */
     async query(sql, ...options) {
         sql = sql.replace(/\s+/g, ' ');
-        options = this.fileter(options||[])
+        options = this.filter(options||[])
         try {
             //进行字段映射
             let result = await super.query({
