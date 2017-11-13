@@ -53,7 +53,7 @@ Interface.create('/account', AccountController, [
   /**
    * 设置头像
    */
-  Route('/:id', 'put', 'update', {
+  Route('/head/:id', 'put', 'update', {
     verify: {
       id: {
         type: 'number',

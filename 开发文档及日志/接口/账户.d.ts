@@ -12,7 +12,9 @@ interface setPwd extends Api {
     id: Number,
     password: String<6, 12>
   },
-  return: Boolean,
+  return: {
+    data: Boolean
+  }
 }
 /**
  * 修改个人密码
@@ -24,7 +26,9 @@ interface updatePwd extends Api {
     oldPwd: String<6, 12>,//旧密码
     newPwd: String<6, 12>//新密码
   },
-  return: Boolean,
+  return: {
+    data: Boolean
+  }
 }
 /**
  * 设置头像
@@ -36,7 +40,9 @@ interface setHead extends Api {
     id: Number,
     image: File
   },
-  return: Boolean
+  return: {
+    data: Boolean
+  }
 }
 /**
  * 登录接口  统一
@@ -52,8 +58,10 @@ interface signIn extends Api {
     id: Number,
     name: String,
     gender: 0 | 1,
-    dept?: Number,
+    dept: Number,
     dept_name: String,
-    _c: TimeStamp
+    type: String,
+    _c: TimeStamp,
+    _d: Number
   }
 }

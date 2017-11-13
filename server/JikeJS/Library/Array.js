@@ -57,3 +57,12 @@ Object.defineProperty(Date.prototype, 'format', {
         return fmt;
     }
 });
+Object.defineProperty(Date.prototype, 'getTimeStamp', {
+  writable: false,
+  enumerable: false,
+  configurable: true,
+  value:function() {
+
+    return parseInt(this.getTime()/1000);
+  }
+});

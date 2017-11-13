@@ -5,3 +5,7 @@
 1. 将所有表的时间字段类型改为时间戳 int类型
 2. 登录表中添加name字段   表示用户的姓名
 3. 将task_field表default字段修改为default_value  require修改为required
+
+
+#2017年11月13日 12:56:57
+1. 将登录表的name gender 移动到教师 学生中

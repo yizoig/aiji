@@ -22,8 +22,8 @@ module.exports = class extends JikeJs.Controller {
   /**
    * 修改学生信息
    */
-  async update({id,dept}){
-    let result = await new StudentModel().update(id,{dept});
+  async update({id,name,gender}){
+    let result = await new StudentModel().update(id,{name,gender});
     return result;
   }
    /**
@@ -32,5 +32,9 @@ module.exports = class extends JikeJs.Controller {
   async del({ids=[]}){
     let successIds = await new StudentModel().del(ids);
     return successIds;
+  }
+  async signUp({account,password,dept}){
+    let insertId = await new StudentModel().creater({ account, password: passwordEncrypt(password), dept });
+    return insertId;
   }
 }

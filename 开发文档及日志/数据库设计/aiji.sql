@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2017/11/10 11:16:50                          */
+/* Created on:     2017/11/13 13:16:04                          */
 /*==============================================================*/
 
 
@@ -31,14 +31,12 @@ drop table if exists teacher;
 /*==============================================================*/
 create table account
 (
-   account_id           int not null,
-   name                 varchar(30),
+   account_id           int not null auto_increment,
    type                 varchar(20),
    account              varchar(20),
    password             varchar(32),
-   gender               char,
    _c                   int,
-   _d                   tinyint,
+   _d                   tinyint default 0,
    primary key (account_id)
 );
 
@@ -47,7 +45,7 @@ create table account
 /*==============================================================*/
 create table admin
 (
-   admin_id             int not null,
+   admin_id             int not null auto_increment,
    account_id           int,
    primary key (admin_id)
 );
@@ -57,7 +55,7 @@ create table admin
 /*==============================================================*/
 create table department
 (
-   dept_id              int not null,
+   dept_id              int not null auto_increment,
    dept_name            varchar(50),
    primary key (dept_id)
 );
@@ -67,8 +65,8 @@ create table department
 /*==============================================================*/
 create table group_members
 (
+   group_id             int not null,
    account_id           int,
-   group_id             int,
    _c                   int
 );
 
@@ -77,12 +75,12 @@ create table group_members
 /*==============================================================*/
 create table groups
 (
-   group_id             int not null,
+   group_id             int not null auto_increment,
    group_name           varchar(20),
    creater              int,
    admins               varchar(100),
    _c                   int,
-   type                 tinyint,
+   type                 char(6),
    primary key (group_id)
 );
 
@@ -91,9 +89,11 @@ create table groups
 /*==============================================================*/
 create table student
 (
-   student_id           int not null,
+   student_id           int not null auto_increment,
    account_id           int,
    dept_id              int,
+   name                 varchar(30),
+   gender               char,
    primary key (student_id)
 );
 
@@ -107,7 +107,7 @@ create table task
    task_title           varchar(20),
    creater              int,
    task_content         int,
-   status               tinyint,
+   status               tinyint default 0,
    _c                   int,
    group_id             int,
    primary key (task_id)
@@ -118,7 +118,7 @@ create table task
 /*==============================================================*/
 create table task_field
 (
-   field_id             int not null,
+   field_id             int not null auto_increment,
    title                varchar(40) not null,
    description          varchar(255) not null,
    options              varchar(255),
@@ -134,7 +134,7 @@ create table task_field
 /*==============================================================*/
 create table task_result
 (
-   result_id            int not null,
+   result_id            int not null auto_increment,
    task_id              char(32),
    creater              int,
    _c                   int,
@@ -157,9 +157,11 @@ create table task_result_item
 /*==============================================================*/
 create table teacher
 (
-   teacher_id           int not null,
+   teacher_id           int not null auto_increment,
    account_id           int,
    dept_id              int,
+   name                 varchar(30),
+   gender               char,
    primary key (teacher_id)
 );
 

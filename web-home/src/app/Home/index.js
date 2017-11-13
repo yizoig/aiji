@@ -1,6 +1,5 @@
 import React from 'react'
 import './index.less'
-import '../Sign/index.less'
 import { TabBar, NavBar } from 'antd-mobile';
 import { Link } from 'react-keeper';
 import TabularList from '../Tabular/list';
@@ -62,7 +61,7 @@ export default class Home extends React.Component {
                     <TabBar.Item
                         icon={<Icon type="tabular" />}
                         selectedIcon={<Icon type="tabular" />}
-                        title="表单"
+                        title="任务"
                         key="tabular"
                         selected={this.state.selectedTab === 'tabular'}
                         onPress={() => {

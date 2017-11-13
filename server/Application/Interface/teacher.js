@@ -27,7 +27,7 @@ Interface.create('/teacher', TeacherController, [
     }
   }),
   /**
-   * 添加(注册)教师
+   * 添加教师
    */
   Route('/', 'post', 'creater', {
     verify: {
@@ -37,7 +37,7 @@ Interface.create('/teacher', TeacherController, [
       },
       name: {
         type: 'string',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
       },
       password: {
         type: 'string',
@@ -65,14 +65,21 @@ Interface.create('/teacher', TeacherController, [
         type: 'number',
         mode: Validate.MUST_VALIDATE
       },
-      dept:{
+      name:{
         type: 'string',
         mode: Validate.EXISTS_VALIDATE
+      },
+      gender: {
+        type: 'number',
+        mode: Validate.EXISTS_VALIDATE,
+        rule: [
+          [[0, 1], "genderErr", 'in']
+        ]
       }
     }
   }),
   /**
-   * 删除学生
+   * 删除教师
    */
   Route('/', 'delete', 'del', {
     verify: {
@@ -81,5 +88,24 @@ Interface.create('/teacher', TeacherController, [
         mode: Validate.MUST_VALIDATE
       }
     }
-  })
+  }),
+   /**
+   * 注册教师
+   */
+  Route('/signUp', 'post', 'signUp', {
+    verify: {
+      account: {
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+      password: {
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+      dept:{
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+    }
+  }),
 ]);

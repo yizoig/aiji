@@ -2,7 +2,7 @@
 //@ts-check
 let { Interface, Route, Validate } = JikeJs;
 import DepartmentController from '../Controller/department';
-Interface.create('/dept', DepartmentController, [
+Interface.create('/department', DepartmentController, [
   /**
    * 显示所有的系
    */
@@ -20,7 +20,8 @@ Interface.create('/dept', DepartmentController, [
         type: 'string',
         mode: Validate.EXISTS_VALIDATE
       },
-    }
+    },
+    needToken:false
   }),
   /**
    * 添加系
@@ -36,7 +37,7 @@ Interface.create('/dept', DepartmentController, [
   /**
    * 修改系信息
    */
-  Route('/', 'put', 'update', {
+  Route('/:id', 'put', 'update', {
     verify: {
       id:{
         type: 'number',

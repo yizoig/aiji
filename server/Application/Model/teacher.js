@@ -32,7 +32,7 @@ module.exports = class extends JikeJs.Model {
   /**
    * 创建教师
    */
-  async creater({ account, password, name, gender, dept }) {
+  async creater({ account, password, name="教师"+account, gender, dept }) {
 
     //先查看。账户是否存在
     let [{ total }] = await this.query(sqls.account.total + " where account = ?", account);
@@ -46,9 +46,9 @@ module.exports = class extends JikeJs.Model {
     }
     await this.startTrans();
     //创建登录信息
-    let { insertId } = await this.query(sqls.account.creater, { account, password, name, gender, type: "teacher" });
+    let { insertId } = await this.query(sqls.account.creater, { account, password,  type: "teacher",_c:new Date().getTimeStamp() });
     //创建教师信息
-    let { insertId: insertId2 } = await this.query(sqls.teacher.creater, { account_id: insertId, dept_id: dept });
+    let { insertId: insertId2 } = await this.query(sqls.teacher.creater, { account_id: insertId, dept_id: dept,name, gender });
     if (!(insertId && insertId2)) {
       await this.rollback();
       return false;
@@ -65,15 +65,15 @@ module.exports = class extends JikeJs.Model {
     if (Object.keys(data).length == 0) {
       throw new JikeJs.BaseError(JikeJs.Code['NOT_CHANGE']);
     }
-    let { dept } = data;
-    if (dept) {
-      //判断系是否存在
-      [{ total }] = await this.query(sqls.department.total + " where dept_id=?", dept);
-      if (total > 0) {
-        throw new JikeJs.BaseError(JikeJs.Code['DEPT_NOT_EXISTS'])
-      }
-    }
-    let { affectedRows } = await this.query(sqls.teacher.update, { dept_id: dept }, { account_id: id });
+    // let { dept } = data;
+    // if (dept) {
+    //   //判断系是否存在
+    //   [{ total }] = await this.query(sqls.department.total + " where dept_id=?", dept);
+    //   if (total > 0) {
+    //     throw new JikeJs.BaseError(JikeJs.Code['DEPT_NOT_EXISTS'])
+    //   }
+    // }
+    let { affectedRows } = await this.query(sqls.teacher.update,data, { account_id: id });
     return affectedRows > 0;
   }
   /**

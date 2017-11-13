@@ -7,7 +7,8 @@ import TabularFieldList from './TabularField/list'
 import TabularPublish from './Tabular/publish'
 import TabularData from './Tabular/data'
 import UpdatePassword from './Mine/updatePassword';
-import Sign from './Sign'
+import SignIn from './Sign/SignIn'
+import SignUp from './Sign/SignUp'
 import Home from './Home'
 import ResultPage from './Result'
 import './index.less'
@@ -30,7 +31,8 @@ export default class App extends React.Component {
                     <Route path="/tabular/:id/publish" component={TabularPublish} />
                     <PrivateRoute path="/tabular/:tid/field/create" component={TabularFieldEditor} />
                     <PrivateRoute path="/tabular/:tid/field/editor/:fid" component={TabularFieldEditor} />
-                    <Route path="/signIn" component={Sign} />
+                    <Route path="/signIn" component={SignIn} />
+                    <Route path="/signUp" component={SignUp} />
                     <Route path="/result/success" component={ResultPage} />
                     <Route index component={StartPage} />
                 </div>

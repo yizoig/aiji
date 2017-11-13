@@ -1,4 +1,4 @@
 let api = {
-    host: "http://exvu.vip:5001"
+    host: "http://localhost:3000"
 };
 export default api;

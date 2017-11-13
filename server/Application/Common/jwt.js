@@ -18,8 +18,7 @@ function makeToken(payload) {
 
 async function  verifyToken(token = '') {
 
-
-  console.log(1)
+  return {};
     /**
      * 解析token
      */

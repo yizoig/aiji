@@ -37,7 +37,7 @@ Interface.create('/student', StudentController, [
       },
       name: {
         type: 'string',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
       },
       password: {
         type: 'string',
@@ -65,9 +65,16 @@ Interface.create('/student', StudentController, [
         type: 'number',
         mode: Validate.MUST_VALIDATE
       },
-      dept:{
+      name:{
         type: 'string',
         mode: Validate.EXISTS_VALIDATE
+      },
+      gender: {
+        type: 'number',
+        mode: Validate.EXISTS_VALIDATE,
+        rule: [
+          [[0, 1], "genderErr", 'in']
+        ]
       }
     }
   }),
@@ -81,5 +88,25 @@ Interface.create('/student', StudentController, [
         mode: Validate.MUST_VALIDATE
       }
     }
-  })
+  }),
+   /**
+   * 注册学生
+   */
+  Route('/signUp', 'post', 'signUp', {
+    verify: {
+      account: {
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+      password: {
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+      dept:{
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      }
+    },
+    needToken:false
+  }),
 ]);

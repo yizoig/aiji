@@ -22,15 +22,23 @@ module.exports = class extends JikeJs.Controller {
   /**
    * 修改教师信息
    */
-  async update({ id, dept }) {
-    let result = await new TeacherModel().update(id, { dept });
+  async update({ id, name,gender }) {
+    let result = await new TeacherModel().update(id, {  name,gender  });
     return result;
   }
   /**
-  * 删除教师
-  */
+   * 删除教师
+   */
   async del({ ids = [] }) {
     let successIds = await new TeacherModel().del(ids);
     return successIds;
+  }
+  
+  /**
+   * 注册教师
+   */
+  async signUp({ account, password, dept }) {
+    let insertId = await new TeacherModel().creater({ account, password: passwordEncrypt(password), dept });
+    return insertId;
   }
 }
