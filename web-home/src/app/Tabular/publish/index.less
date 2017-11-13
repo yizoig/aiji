@@ -1,0 +1,88 @@
+.publish{
+    height: 100%;
+    background:#f8f8f8; 
+    position: relative;
+    .content{
+        height: 100%;
+        padding: 10px 10px;
+        margin-bottom: 30px;
+        overflow: scroll;
+        background: #fff;
+        .explanation{
+            line-height: 40px;
+        }
+        .items{
+            .item{
+                padding: 10px;
+                .field-name{
+                    line-height: 30px;
+                }
+                .field-value{
+                    input{
+                        padding: 10px;
+                        line-height: 30px;
+                        height: 40px;
+                        width:100%;
+                        border: 1px solid #d9d9d9;
+                        border-radius: 4px;
+                        &:hover{
+                            border-color: #49a9ee;  
+                        }
+                        &:focus{
+                            outline: 0;
+                            box-shadow: 0 0 0 2px rgba(16,142,233,.2);
+                        }
+                    }
+                }
+            }
+                
+        }
+        .submit{
+            margin-top: 20px;
+        }
+    }
+    .mask{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom:0;
+        width: 100%;
+        height: 100%;
+        background:rgba(0,0,0,0.5);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .web-mask{
+            background-image: url('../../../sources/image/duihuakuang_1.png');
+            background-position: 0 0;
+            background-repeat: no-repeat;
+            background-size: contain;
+            display: block;
+            height: 230px;
+            position: relative;
+            width: 260px;
+            z-index: 999;
+        }
+        .save-code{
+            text-align: center;
+            color: #fff;
+          
+        }
+    }
+    .footer{
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        color: #fff;
+        background: #4B4B4B;
+        line-height: 30px;
+        padding: 0 20px;
+        text-align: center;
+        a{
+            color: #fff;
+        }
+    }
+}

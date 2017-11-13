@@ -1,0 +1,43 @@
+{
+    "presets": [
+        "react",
+        "es2015",
+        "stage-0"
+    ],
+    "plugins": [
+        [
+            "import",
+            {
+                "style": "css",
+                "libraryName": "antd-mobile"
+            }
+        ],
+        "transform-runtime"
+    ],
+    "env": {
+        "development": {
+            "plugins": [
+                [
+                    "react-transform",
+                    {
+                        "transforms": [
+                            {
+                                "transform": "react-transform-hmr",
+                                "imports": [
+                                    "react"
+                                ],
+                                "locals": [
+                                    "module"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            ]
+        },
+        "production": {
+            "plugins": [
+            ]
+        }
+    }
+}

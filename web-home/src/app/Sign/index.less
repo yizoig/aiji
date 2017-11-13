@@ -1,0 +1,88 @@
+.sign{
+    background: #f7fafc;
+    height: 100%;
+    .main-body{
+        width: 80%;
+        margin: auto;
+        .header{
+            text-align: center;
+            line-height: 50px;
+            padding: 40px 0;
+            .logo{
+                width: 123px;
+                background: url('../../sources/image/logo.png')  no-repeat;
+                background-position: contain;
+                background-size: 100% 100%;;
+                height: 60px;
+                margin: auto;
+            }
+            .sub-title{
+                font-weight: 400;
+                margin: 20px 0;
+            }
+        }
+        .tab-navs{
+            font-size: 18px;
+            text-align: center;
+            .navs-slider{
+                position: relative;
+                display: inline-block;
+                .navs-item{
+                    width: 80px;
+                    display: inline-block;
+                    text-align: center;
+                    border-bottom:3px solid transparent;
+                    padding: 5px 10px;
+                    line-height: 35px;
+                    color: #ccc;
+                    &:hover{
+                        color: rgb(85, 85, 85);
+                    }
+                    &.active{
+                        color: #0f88eb;
+                    }
+                }
+                &[data-active="signUp"]{
+                    .navs-slider-bar{
+                        left:95px;
+                    }
+                }
+                .navs-slider-bar{
+                    position: absolute;
+                    left: 15px;
+                    bottom: 0;
+                    width: 50px;
+                    height: 2px;
+                    background: #0f88eb;
+                    transition: all .3s ease-in;
+
+                }
+            }
+        }
+        .main{
+            .form-group{
+                padding:0 20px;
+                .form-item{
+                    margin-top: 25px;
+                    font-size: 15px;
+                    input{
+                        padding: 10px;
+                        line-height: 30px;
+                        height: 40px;
+                        width:100%;
+                        border: 1px solid #d9d9d9;
+                        border-radius: 4px;
+                        &:hover{
+                            border-color: #49a9ee;  
+                        }
+                        &:focus{
+                            outline: 0;
+                            box-shadow: 0 0 0 2px rgba(16,142,233,.2);
+                        }
+                    }
+                   
+                }
+            }
+        }
+    }
+}

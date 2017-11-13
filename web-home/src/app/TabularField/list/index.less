@@ -1,0 +1,66 @@
+.tabular-editor{
+
+    .tabular-mes{
+        padding: 10px 15px;
+        .title{
+            padding: 10px 0;
+        }
+        .desc{
+            font-size: 14px;
+            color: #999999;
+        }
+    }
+    .quest-list{
+        border-top: 1px solid #ccc;        
+        border-bottom: 1px solid #ccc;
+        padding-left:10px;   
+        .quest-item{
+           
+            line-height: 40px;
+            border-bottom: 1px solid #ccc;
+            padding-right: 10px;
+            .mes{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                .number,.name{
+                    margin-left: 10px;
+                }
+            }
+          
+            &:last-child{
+                border: none;
+            }
+        }
+           
+        .tool-bar{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            color: #108ee9;
+         
+            .tool-item{
+                &.disabled{
+                    color: #ccc;
+                }
+                font-size: 12px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+    }
+    .add-question{
+        font-size: 18px;
+        line-height: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 0;
+        
+    }
+    
+}

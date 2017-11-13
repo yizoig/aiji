@@ -1,0 +1,47 @@
+.questions{
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    background: rgba(0,0,0,.5);
+    .type-box{
+        width: 100%;
+        position: absolute;
+        bottom:0;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        overflow: hidden;
+        .header{
+            background: #fff;
+            line-height: 30px;
+            text-align: center;
+        }
+        .quest-type-list{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap; 
+            justify-content: center;
+            background: #f0f0f0;
+            padding: 20px 0;
+            .type-item{
+                .am-icon{
+                    font-size: 20px;
+                }
+                text-align: center;
+                padding: 10px 20px;
+                &:active{
+                    background: #fcfcfc;
+                }
+            }
+        }
+        .close{
+            padding: 9px;
+            height: auto;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
