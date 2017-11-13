@@ -2,6 +2,7 @@
 const AccountModel = require("../Model/account");
 const { passwordEncrypt } = require("../Common/function");
 const { makeToken } = require("../Common/jwt");
+const gm = require("gm");
 module.exports = class extends JikeJs.Controller {
   /**
    * 登录
@@ -37,5 +38,13 @@ module.exports = class extends JikeJs.Controller {
    */
   async setHead({ id, img }) {
     console.log("设置头像");
+    gm(50, 50, "#f00").drawText(40, 40, id).write(`../static/account/head/${id}.png`, (err)=>{
+      console.log(err)
+      if (err) {
+        this.json(err);
+      } else {
+        this.json("ok")
+      }
+    });
   }
 }

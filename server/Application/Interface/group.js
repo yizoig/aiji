@@ -3,16 +3,23 @@
 let { Interface, Route, Validate } = JikeJs;
 const GroupController = require("../Controller/group");
 Interface.create('/group',  GroupController, [
-  Route('/:id', 'put', 'update', {
+  /**
+   * 获取所有的群组
+   */
+  Route('/', 'get', 'list', {
     verify: {
-      id: {
+      page: {
         type: 'number',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
       },
-      file: {
+      everyPage: {
         type: 'file',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
+      },
+      searchKey: {
+        type: 'file',
+        mode: Validate.EXISTS_VALIDATE
       }
     }
-  })
+  }),
 ]);

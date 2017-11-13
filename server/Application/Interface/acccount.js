@@ -53,15 +53,15 @@ Interface.create('/account', AccountController, [
   /**
    * 设置头像
    */
-  Route('/head/:id', 'put', 'update', {
+  Route('/head/:id', 'get', 'setHead', {
     verify: {
       id: {
-        type: 'number',
+        type: 'string',
         mode: Validate.MUST_VALIDATE
       },
-      file: {
+      img: {
         type: 'file',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
       }
     }
   })

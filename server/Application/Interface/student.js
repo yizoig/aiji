@@ -37,7 +37,7 @@ Interface.create('/student', StudentController, [
       },
       name: {
         type: 'string',
-        mode: Validate.EXISTS_VALIDATE
+        mode: Validate.MUST_VALIDATE
       },
       password: {
         type: 'string',
@@ -53,7 +53,7 @@ Interface.create('/student', StudentController, [
         rule: [
           [[0, 1], "genderErr", 'in']
         ]
-      }
+      },
     }
   }),
   /**
@@ -103,6 +103,10 @@ Interface.create('/student', StudentController, [
         mode: Validate.MUST_VALIDATE
       },
       dept:{
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      },
+      name:{
         type: 'string',
         mode: Validate.MUST_VALIDATE
       }

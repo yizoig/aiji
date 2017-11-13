@@ -37,7 +37,7 @@ Interface.create('/teacher', TeacherController, [
       },
       name: {
         type: 'string',
-        mode: Validate.EXISTS_VALIDATE
+        mode: Validate.MUST_VALIDATE
       },
       password: {
         type: 'string',
@@ -106,6 +106,10 @@ Interface.create('/teacher', TeacherController, [
         type: 'string',
         mode: Validate.MUST_VALIDATE
       },
+      name:{
+        type: 'string',
+        mode: Validate.MUST_VALIDATE
+      }
     }
   }),
 ]);
