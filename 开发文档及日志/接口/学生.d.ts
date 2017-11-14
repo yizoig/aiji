@@ -12,7 +12,7 @@ interface list extends Api {
     page?: Number,//页码 默认0
     everyPage?: Number,//每一页的条数
     searchKey?: String,//关键字搜索
-    dept?: Number
+    deptId?: Number
   },
   return: {
     everyPage: Number,
@@ -23,9 +23,9 @@ interface list extends Api {
       name: String,//名称
       gender: 0 | 1,//性别
       type: String,
-      dept_name: String
-      dept: Number,
-      _c: TimeStamp//加入时间
+      deptId: Number,
+      deptName: String
+      _c: TimeStamp//加入时间戳
       _d: Number
     }>
   }
@@ -39,27 +39,12 @@ interface creater extends Api {
   params: {
     account: String,//登录帐号
     password: String<6, 12>,//登录密码
-    name?: String,
+    name: String,
     gender?: 0 | 1,
-    dept: Number,//学院
+    deptId: Number,//学院
   },
   return: {
     data: Number//返回添加成功的id
-  }
-}
-/**
- * 修改学生信息
- */
-interface update extends Api {
-  name: "/student/:id",
-  method: m.PUT,
-  params: {
-    id:Number,
-    name?: String,//名称
-    gender?: 0 | 1,//性别
-  },
-  return: {
-    data: Boolean
   }
 }
 /**
@@ -84,7 +69,8 @@ interface signUp extends Api {
   params: {
     account: String,//登录帐号
     password: String<6, 12>,//登录密码
-    dept: Number//学院
+    name:String,
+    deptId: Number//学院
   },
   return: {
     data: Number//返回添加成功的id

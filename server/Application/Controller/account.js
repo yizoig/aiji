@@ -30,7 +30,14 @@ module.exports = class extends JikeJs.Controller {
    * 修改个人密码
    */
   async updatePwd({ oldPwd, newPwd }) {
-    let result = await new AccountModel().updatePwd({ id: 1, oldPwd: passwordEncrypt(oldPwd), newPwd: passwordEncrypt(newPwd) });
+    let result = await new AccountModel().updatePwd({ id: 2, oldPwd: passwordEncrypt(oldPwd), newPwd: passwordEncrypt(newPwd) });
+    return result;
+  }
+  /**
+   * 修改基本信息
+   */
+  async updateBaseinfo({id,name,gender}){
+    let result = await new AccountModel().updateBaseinfo(id,{name,gender });
     return result;
   }
   /**

@@ -16,8 +16,8 @@ interface list extends Api {
     everyPage: Number,
     total: Number,
     list: Array<{
-      dept_id: Number,//学院id
-      dept_name: String//学院名
+      id: Number,//学院id
+      name: String//学院名
     }>
   }
 }
@@ -40,7 +40,7 @@ interface creater extends Api {
 interface update extends Api {
   name: '/department/:id',
   params: {
-    id:String,//学院id
+    id:Number,//学院id
     name: String, //学院名
   }
   return: Boolean

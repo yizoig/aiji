@@ -1,19 +1,30 @@
 ##创建登录
 #creater
-insert into account set ?;
+insert into accounts set ?;
 
 ##获取条数
 #total
-select count(*) as total from account
+select count(*) as total from accounts
 
 ##获取登录表信息
-#list
-select * from account
+#signIn
+select 
+account_id as id,
+account_name AS name,
+account_gender AS gender,
+account_type AS type,
+account_number AS account,
+departments.dept_id AS deptId,
+departments.dept_name AS deptName,
+_c,_d 
+from accounts
+join departments on departments.dept_id = accounts.dept_id
+where account_number = ? and account_pwd = ?
 
 ##删除数据
 #del
-delete from account where account_id in (?)
+delete from accounts where account_id in (?)
 
 ##修改信息
 #update
-update account set ?
+update accounts set ? where account_id = ?

@@ -43,7 +43,14 @@ module.exports = {
   NOT_FOUND_ERR: {
     mes: "数据不存在"
   },
-
+  GROUP_NAME_EXISTS:{
+    mes:"群名已被使用",
+    detail:"请换一个群名"
+  },
+  GROUP_NOT_EXISTS:{
+    mes:"群不存在",
+    detail:"群不存在"
+  },
   //参数错误
   PARAMS_ERR: {
     mes: "参数错误"

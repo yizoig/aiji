@@ -1,7 +1,27 @@
 import { Api, method as m, Number, Boolean, String, TimeStamp, File } from './Api.d';
 
 // ============账户(account)api=================
-
+/**
+ * 登录接口  统一
+ */
+interface signIn extends Api {
+  name: "/account/signIn",
+  method: m.POST,
+  params: {
+    account: String,
+    password: String
+  },
+  return: {
+    id: Number,
+    name: String,
+    gender: 0 | 1,
+    deptId: Number,
+    deptName: String,
+    type: String,
+    _c: TimeStamp,
+    _d: Number
+  }
+}
 /**
  * 设置密码
  */
@@ -44,24 +64,19 @@ interface setHead extends Api {
     data: Boolean
   }
 }
+
 /**
- * 登录接口  统一
+ * 修改基本信息
  */
-interface signIn extends Api {
-  name: "/account/signIn",
-  method: m.POST,
+interface updateBaseinfo extends Api {
+  name: "/account/baseinfo",
+  method: m.PUT,
   params: {
-    account: String,
-    password: String
+    id:Number,
+    name?: String,//名称
+    gender?: 0 | 1,//性别
   },
   return: {
-    id: Number,
-    name: String,
-    gender: 0 | 1,
-    dept: Number,
-    dept_name: String,
-    type: String,
-    _c: TimeStamp,
-    _d: Number
+    data: Boolean
   }
 }

@@ -9,6 +9,8 @@ interface list extends Api {
   name: "/group",
   method: m.GET,
   params: {
+    creater?:Number,//获取创建人的群  精确查询
+    member?:Number,//获取指定群成员的群 精确查询
     page?: Number,//页码 默认0
     everyPage?: Number,//每一页的数量  默认15
     searchKey?: String,//搜索关键字 针对 群组名,群id
@@ -17,15 +19,15 @@ interface list extends Api {
     everyPage:Number,
     total:Number,
     list: Array<{
-      group_id: Number,
-      group_name: Number,
+      id: Number,
+      name: Number,
       creater:String,//创建人
       _c:Number,//创建时间
-      admins:Array<Number>,//管理员
       type:"class"|"group"
     }>
   }
 }
+
 /**
  * 创建新群
  */
@@ -33,8 +35,7 @@ interface creater extends Api {
   name: "/group",
   method: m.POST,
   params: {
-    group_name: Number,//群组名称
-    admins:Array<Number>,
+    name: String,//群组名称
     type:"class"|"group"
   },
   return:{
@@ -48,7 +49,8 @@ interface update extends Api {
   name: "/group",
   method: m.PUT,
   params: {
-    group_name: Number,//群组名称
+    id:Number,
+    name: String,//群组名称
     type:"class"|"group"
   }
   return:{
@@ -56,7 +58,7 @@ interface update extends Api {
   }
 }
 /**
- * 删除（解散）群
+ * 删除群(管理员)
  */
 interface del extends Api {
   name: "/group",
@@ -69,12 +71,51 @@ interface del extends Api {
   }
 }
 /**
+ * 解散群（创建人）
+ */
+interface del extends Api {
+  name: "/group",
+  method: m.DELETE,
+  params: {
+    id:Number,//需要删除的群id
+  },
+  return:{
+    data: Array<Number>//返回删除成功的群
+  }
+}
+/**
+ * 获取群成员
+ */
+interface memberList extends Api{
+  name: "/group/member",
+  method: m.GET,
+  params: {
+    id:Number,
+    gender?:0|1,
+    page?: Number,//页码 默认0
+    everyPage?: Number,//每一页的数量  默认15
+    searchKey?: String,//搜索关键字 针对 群成员
+  },
+  return: {
+    data:Array<{
+      id:Number,
+      name:String,
+      gender:"0"|"1",
+      type:String,
+      account:String,
+      _c:String,
+      _d:Number
+    }>
+  }
+}
+/**
  * 添加成员
  */
 interface addMember extends Api {
-  name: "/group/member/:id",
+  name: "/group/member",
   method: m.POST,
   params: {
+    id:Number,
     members: Array<Number>//添加成功的成员id
   },
   return: {
@@ -86,9 +127,10 @@ interface addMember extends Api {
  * 删除群成员
  */
 interface removeMember extends Api {
-  name: "/group/member/:id",
+  name: "/group/member",
   method: m.DELETE,
   params: {
+    id:Number,
     members: Array<Number>//删除成功的成员id
   },
   return: {

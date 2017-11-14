@@ -18,6 +18,9 @@ module.exports ={
    DEPT_NAME_REAPT:1104,
    DEPT_NOT_EXISTS:1105,
    NOT_OWN_ERR:2001,
+   //群名存在
+   GROUP_NAME_EXISTS:2002,
+   GROUP_NOT_EXISTS:2003,
     //数据不存在
    NOT_FOUND_ERR:4001,
    //请求成功

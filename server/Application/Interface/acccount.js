@@ -18,7 +18,7 @@ Interface.create('/account', AccountController, [
         mode: Validate.MUST_VALIDATE
       }
     },
-    needToken:false
+    needToken: false
   }),
   /**
    * 修改密码
@@ -56,12 +56,34 @@ Interface.create('/account', AccountController, [
   Route('/head/:id', 'get', 'setHead', {
     verify: {
       id: {
-        type: 'string',
+        type: 'number',
         mode: Validate.MUST_VALIDATE
       },
       img: {
         type: 'file',
         mode: Validate.EXISTS_VALIDATE
+      }
+    }
+  }),
+  /**
+ * 修改基本信息
+ */
+  Route('/baseinfo', 'put', 'updateBaseinfo', {
+    verify: {
+      id: {
+        type: 'number',
+        mode: Validate.MUST_VALIDATE
+      },
+      name: {
+        type: 'string',
+        mode: Validate.EXISTS_VALIDATE
+      },
+      gender: {
+        type: 'number',
+        mode: Validate.EXISTS_VALIDATE,
+        rule: [
+          [[0, 1], "genderErr", 'in']
+        ]
       }
     }
   })

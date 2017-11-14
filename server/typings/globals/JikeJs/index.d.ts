@@ -23,6 +23,7 @@ class Mysql {
 class Model extends Mysql {
     _map: any;
     query(sql: String, ...options: any);
+    filter(data:Object):Object;
 }
 interface router {
     name: String,

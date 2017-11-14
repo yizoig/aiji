@@ -71,7 +71,6 @@ const Validate = (function () {
    */
   Validate._validateFiledType = (fieldKey, fieltype, fieldValue) => {
 
-
     switch (fieltype) {
       case "number": {
         let type = Object.prototype.toString.call(fieldValue);
@@ -104,7 +103,11 @@ const Validate = (function () {
   Validate._validateField = (fieldType, fieldKey, fieldVerify, fieldValue) => {
 
 
-    fieldValue = fieldType == "number" ? parseInt(fieldValue) : fieldValue;
+  
+   
+    if( fieldType == "number" && fieldValue!=null &&fieldValue!=undefined){
+      fieldValue = parseInt(fieldValue);
+    }
     //1.先验证参数是不是想要的类型
     if (fieldType != 'any') {
       //如果验证失败就不用继续验证

@@ -6,25 +6,18 @@ module.exports = class extends JikeJs.Controller {
   /**
    * 获取所有的学生
    */
-  async list({ page = 1, everyPage = 15, searchKey,dept }) {
+  async list({ page = 1, everyPage = 15, searchKey,deptId }) {
 
-    let data = await new StudentModel().list({ page: page - 1, everyPage, searchKey,dept });
+    let data = await new StudentModel().list({ page: page - 1, everyPage, searchKey,deptId });
     return data;
 
   }
   /**
    * 添加学生
    */
-  async creater({ account, password, name, gender, dept }) {
-    let insertId = await new StudentModel().creater({ account, password: passwordEncrypt(password), name, gender, dept });
+  async creater({ account, password, name, gender, deptId }) {
+    let insertId = await new StudentModel().creater({ account, password: passwordEncrypt(password), name, gender, deptId });
     return insertId;
-  }
-  /**
-   * 修改学生信息
-   */
-  async update({id,name,gender}){
-    let result = await new StudentModel().update(id,{name,gender});
-    return result;
   }
    /**
    * 删除学生
@@ -33,8 +26,11 @@ module.exports = class extends JikeJs.Controller {
     let successIds = await new StudentModel().del(ids);
     return successIds;
   }
-  async signUp({account,password,dept}){
-    let insertId = await new StudentModel().creater({ account, password: passwordEncrypt(password), dept });
+   /**
+   * 注册学生
+   */
+  async signUp({account,password,name,deptId}){
+    let insertId = await new StudentModel().creater({ account,name, password: passwordEncrypt(password), deptId });
     return insertId;
   }
 }

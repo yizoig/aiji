@@ -1,19 +1,19 @@
 ##添加系
 #creater
-insert into department set ?;
+insert into departments set ?;
 
 ##修改系
 #update
-update department set ? where ?;
+update departments set ? where ?;
 
 ##删除系
 #del
-delete from department where dept_id in (?);
+delete from departments where dept_id in (?);
 
 ##获取所有的系
 #list
-select * from department 
+select * from departments 
 
 ##获取条数
 #total
-select count(*) as total from department
+select count(*) as total from departments

@@ -37,7 +37,7 @@ Interface.create('/department', DepartmentController, [
   /**
    * 修改系信息
    */
-  Route('/:id', 'put', 'update', {
+  Route('/', 'put', 'update', {
     verify: {
       id:{
         type: 'number',

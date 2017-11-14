@@ -20,8 +20,8 @@ Interface.create('/student', StudentController, [
         type: 'string',
         mode: Validate.EXISTS_VALIDATE
       },
-      dept:{
-        type: 'string',
+      deptId:{
+        type: 'number',
         mode: Validate.EXISTS_VALIDATE
       },
     }
@@ -43,8 +43,8 @@ Interface.create('/student', StudentController, [
         type: 'string',
         mode: Validate.MUST_VALIDATE
       },
-      dept:{
-        type: 'string',
+      deptId:{
+        type: 'number',
         mode: Validate.MUST_VALIDATE
       },
       gender: {
@@ -54,28 +54,6 @@ Interface.create('/student', StudentController, [
           [[0, 1], "genderErr", 'in']
         ]
       },
-    }
-  }),
-  /**
-   * 修改学生信息(不包括基础信息  基础信息在登录表中修改)
-   */
-  Route('/:id', 'put', 'update', {
-    verify: {
-      id: {
-        type: 'number',
-        mode: Validate.MUST_VALIDATE
-      },
-      name:{
-        type: 'string',
-        mode: Validate.EXISTS_VALIDATE
-      },
-      gender: {
-        type: 'number',
-        mode: Validate.EXISTS_VALIDATE,
-        rule: [
-          [[0, 1], "genderErr", 'in']
-        ]
-      }
     }
   }),
   /**
@@ -99,11 +77,11 @@ Interface.create('/student', StudentController, [
         mode: Validate.MUST_VALIDATE
       },
       password: {
-        type: 'string',
+        type:'string',
         mode: Validate.MUST_VALIDATE
       },
-      dept:{
-        type: 'string',
+      deptId:{
+        type: 'number',
         mode: Validate.MUST_VALIDATE
       },
       name:{

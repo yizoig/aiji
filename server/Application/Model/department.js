@@ -6,8 +6,8 @@ module.exports = class extends JikeJs.Model {
    */
   async list({ page, everyPage, searchKey }) {
 
-    let totalSql = "select count(*) as total from department";
-    let sql = "select * from department";
+    let totalSql = "select count(*) as total from departments";
+    let sql = "select dept_id AS id,dept_name AS name from departments";
     let args = [];
     if (searchKey) {
       totalSql += " where dept_name like ?";
@@ -34,7 +34,7 @@ module.exports = class extends JikeJs.Model {
    */
   async creater({ name: dept_name }) {
     //判断是否有重名
-    let [{total}] = await this.query("select count(*) as total from department where dept_name=?",dept_name);
+    let [{total}] = await this.query("select count(*) as total from departments where dept_name=?",dept_name);
     if(total>0){
       throw new JikeJs.BaseError(JikeJs.Code['DEPT_NAME_REAPT']);
     }
@@ -64,6 +64,6 @@ module.exports = class extends JikeJs.Model {
     }
     //先删除
     let {affectedRows} = await this.query(sqls.department.del,ids);
-    return affectedRows>0;
+    return affectedRows>=0;
   }
 }

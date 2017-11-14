@@ -1,0 +1,12 @@
+##创建群
+#creater
+insert into groups(group_name,group_type,_c) values (?)
+
+
+##修改群信息
+#update
+update groups set ?
+
+##获取群信息
+#info
+select groups.group_id as id,group_name as name,group_type type,group_creater as creater,_c from groups where  group_id = ?
