@@ -87,7 +87,7 @@ Interface.create('/group', GroupController, [
     }
   }),
   /**
-   * 获取群列表
+   * 获取群成员列表
    */
   Route("/member", "get", "memberList", {
     verify: {

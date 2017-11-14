@@ -95,26 +95,26 @@ module.exports = class extends JikeJs.Model {
   }
   async memberList(id, { gender, page, everyPage, searchKey }) {
 
-    let sql = " select * from group_members join accounst on accounts.account_id=group_members.account_id";
+    let sql = " select accounts.account_id AS id,account_number as account,account_type as type,dept_id as deptId,account_name as name,account_gender as gender,accounts._c,accounts._d,group_members._c as joinTime from group_members join accounts on accounts.account_id=group_members.account_id";
     let totalSql = " select count(*) as total from group_members join accounts on accounts.account_id=group_members.account_id";
     let whereArr = ['(group_id =?)'];
     let args = [id];
     if (searchKey) {
-      whereArr.push(`(group_members.account_id like ?,accounts.account_name like ?)`);
+      whereArr.push(`(accounts.account_number like ? or accounts.account_name like ?)`);
       args.push(`%${searchKey}%`, `%${searchKey}%`);
     }
-    if (gender) {
+    if (gender!=undefined || gender!=null) {
       whereArr.push(`(accounts.account_gender = ?)`);
       args.push(gender);
     }
     //获取条数
-    let [{ total }] = await this.query(totalSql + whereArr.join("and"), ...args);
+    let [{ total }] = await this.query(totalSql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : "") , ...args);
     let list = [];
     if (total > 0) {
       //设置分页
       let limitStr = " limit ?,?";
       args.push(page * everyPage, everyPage);
-      list = await await this.query(totalSql + whereArr.join("and")+limitStr, ...args);
+      list = await this.query(sql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : "") +limitStr, ...args);
     }
     return {
       total,everyPage,list
@@ -127,7 +127,15 @@ module.exports = class extends JikeJs.Model {
     if (!(await this.info(id))) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
     }
-    let { affectedRows } = this.query('REPLACE into group_members(group_id,account_id,_c) values (??)', members.forEach((value) => [id, value,new Date().getTimeStamp()]))
+    let time = new Date().getTimeStamp();
+    let arr =[];
+    let args =[]
+    members.forEach((value) =>{
+      arr.push('(?)');
+      args.push([id,value,time]);
+    });
+    console.log(arr,args);
+    let { affectedRows } =await this.query(`insert ignore into group_members(group_id,account_id,_c) values ${arr.join(',')}`,...args)
     return affectedRows > 0;
   }
   /**
@@ -137,7 +145,7 @@ module.exports = class extends JikeJs.Model {
     if (!(await this.info(id))) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
     }
-    let { affectedRows } = this.query('delete from group_members where group_id=? and account_id in ()', id, members);
+    let { affectedRows } =await this.query('delete from group_members where group_id=? and account_id in (?)', id, members);
     return affectedRows > 0;
   }
 }
