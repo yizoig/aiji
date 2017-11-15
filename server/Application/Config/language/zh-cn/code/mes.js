@@ -10,6 +10,13 @@ module.exports = {
     mes: "身份验证失败",
     detail: "请重新登录"
   },
+  CREATER_CLASS_ERR:{
+    mes: "没有权限创建班级",
+    detail: "只有管理可以创建班级"
+  },
+  NOT_CREATER_GROUP_ERR:{
+    mes:"你不是创建人，不能进行操作",
+  },
   //令牌失效
   TOKEN_INVALID: {
     mes: "身份已失效",
@@ -39,7 +46,10 @@ module.exports = {
   PASSWORD_ERR: {
     mes: "密码错误"
   },
-
+  OLD_PASSWORD_ERR:{
+    mes:"旧密码错误",
+    detail:"请重试"
+  },
   NOT_FOUND_ERR: {
     mes: "数据不存在"
   },

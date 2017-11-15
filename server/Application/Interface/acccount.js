@@ -72,7 +72,7 @@ Interface.create('/account', AccountController, [
     verify: {
       id: {
         type: 'number',
-        mode: Validate.MUST_VALIDATE
+        mode: Validate.EXISTS_VALIDATE
       },
       name: {
         type: 'string',

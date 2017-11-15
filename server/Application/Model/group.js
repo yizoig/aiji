@@ -4,7 +4,6 @@ module.exports = class extends JikeJs.Model {
    * 获取所有的群
    */
   async list({ creater, member, page, everyPage, searchKey }) {
-
     let sql = " select groups.group_id id,group_name name,group_creater,group_type,_c,_d from groups ";
     let totalSql = " select count(*) as total from groups ";
     let whereArr = [];
@@ -26,7 +25,7 @@ module.exports = class extends JikeJs.Model {
       args.push(creater);
     }
     //获取总条数
-    let [{ total }] = await this.query(totalSql +  (whereArr.length > 0 ? (" where " + whereArr.join("and")) : ""), ...args);
+    let [{ total }] = await this.query(totalSql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : ""), ...args);
     let list = [];
 
     //如果数据不为0  就获取数据
@@ -45,13 +44,13 @@ module.exports = class extends JikeJs.Model {
   /**
    * 创建群
    */
-  async creater({ name, type }) {
+  async creater({ id, name, type }) {
     //判断群名是否存在
     let [{ total }] = await this.query("select count(*) as total from groups where group_name=?", name);
     if (total > 0) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NAME_EXISTS']);
     }
-    let { insertId } = await this.query(sqls.group.creater, [name, type,new Date().getTimeStamp()]);
+    let { insertId } = await this.query(sqls.group.creater, [name, id, type, new Date().getTimeStamp()]);
     return insertId ? insertId : false;
   }
   /**
@@ -65,17 +64,21 @@ module.exports = class extends JikeJs.Model {
   /**
    * 修改群信息
    */
-  async update(id, data) {
+  async update(id, data,user) {
 
-    if (!(await this.info(id))) {
+    let info = await this.info(id);
+    if (!info) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
     }
-    data  =this.filter(data);
+    if(user.type!=="admin" && user.id!=info['creater']){
+      throw new JikeJs.BaseError(JikeJs.Code['UNAUTH']);
+    }
+    data = this.filter(data);
     if (Object.keys(data).length == 0) {
       throw new JikeJs.BaseError(JikeJs.Code['NOT_CHANGE']);
     }
-    let {type,name} = data;
-    let { affectedRows } = await this.query(sqls.group.update+" WHERE group_id =?", {group_name:name,group_type:type},id);
+    let { type, name } = data;
+    let { affectedRows } = await this.query(sqls.group.update + " WHERE group_id =?", { group_name: name, group_type: type }, id);
     return affectedRows > 0;
   }
   /**
@@ -93,6 +96,29 @@ module.exports = class extends JikeJs.Model {
     await this.rollback();
     return false;
   }
+  /**
+  * 解散群
+  */
+  async dissolve(id, userId) {
+
+    let info = await this.info(id);
+    if (!info) {
+      throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
+    }
+    if (info['creater'] != userId) {
+      throw new JikeJs.BaseError(JikeJs.Code['NOT_CREATER_GROUP_ERR']);
+    }
+    //开启事务
+    await this.startTrans();
+    let { affectedRows: affectedRows1 } = await this.query("delete from group_members where group_id = ?", id)
+    let { affectedRows: affectedRows2 } = await this.query("delete from groups where group_id = ?", id);
+    if (affectedRows1 >= 0 && affectedRows2 > 0) {
+      await this.commit();
+      return true;
+    }
+    await this.rollback();
+    return false;
+  }
   async memberList(id, { gender, page, everyPage, searchKey }) {
 
     let sql = " select accounts.account_id AS id,account_number as account,account_type as type,dept_id as deptId,account_name as name,account_gender as gender,accounts._c,accounts._d,group_members._c as joinTime from group_members join accounts on accounts.account_id=group_members.account_id";
@@ -103,49 +129,57 @@ module.exports = class extends JikeJs.Model {
       whereArr.push(`(accounts.account_number like ? or accounts.account_name like ?)`);
       args.push(`%${searchKey}%`, `%${searchKey}%`);
     }
-    if (gender!=undefined || gender!=null) {
+    if (gender != undefined || gender != null) {
       whereArr.push(`(accounts.account_gender = ?)`);
       args.push(gender);
     }
     //获取条数
-    let [{ total }] = await this.query(totalSql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : "") , ...args);
+    let [{ total }] = await this.query(totalSql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : ""), ...args);
     let list = [];
     if (total > 0) {
       //设置分页
       let limitStr = " limit ?,?";
       args.push(page * everyPage, everyPage);
-      list = await this.query(sql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : "") +limitStr, ...args);
+      list = await this.query(sql + (whereArr.length > 0 ? (" where " + whereArr.join("and")) : "") + limitStr, ...args);
     }
     return {
-      total,everyPage,list
+      total, everyPage, list
     }
   }
   /**
     * 添加群成员
     */
-  async addMember(id, members = []) {
-    if (!(await this.info(id))) {
+  async addMember(id, members = [],user) {
+    let info = await this.info(id);
+    if (!info) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
     }
+    if(user.type!=="admin" && user.id!=info['creater']){
+      throw new JikeJs.BaseError(JikeJs.Code['UNAUTH']);
+    }
     let time = new Date().getTimeStamp();
-    let arr =[];
-    let args =[]
-    members.forEach((value) =>{
+    let arr = [];
+    let args = []
+    members.forEach((value) => {
       arr.push('(?)');
-      args.push([id,value,time]);
+      args.push([id, value, time]);
     });
-    console.log(arr,args);
-    let { affectedRows } =await this.query(`insert ignore into group_members(group_id,account_id,_c) values ${arr.join(',')}`,...args)
+    console.log(arr, args);
+    let { affectedRows } = await this.query(`insert ignore into group_members(group_id,account_id,_c) values ${arr.join(',')}`, ...args)
     return affectedRows > 0;
   }
   /**
    * 删除群成员
    */
-  async delMember(id, members) {
-    if (!(await this.info(id))) {
+  async delMember(id, members,user) {
+    let info = await this.info(id);
+    if (!info) {
       throw new JikeJs.BaseError(JikeJs.Code['GROUP_NOT_EXISTS']);
     }
-    let { affectedRows } =await this.query('delete from group_members where group_id=? and account_id in (?)', id, members);
+    if(user.type!=="admin" && user.id!=info['creater']){
+      throw new JikeJs.BaseError(JikeJs.Code['UNAUTH']);
+    }
+    let { affectedRows } = await this.query('delete from group_members where group_id=? and account_id in (?)', id, members);
     return affectedRows > 0;
   }
 }

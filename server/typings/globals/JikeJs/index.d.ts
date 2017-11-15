@@ -7,9 +7,16 @@ class Controller {
     header(key: String, value: any): void;
     request:Request;
     response:Response;
-    reqUser:{
+    user:{
         id:any,
-        type:any
+        name:string,
+        gender:string,
+        account:string,
+        password:string,
+        type:any,
+        deptId:number,
+        _c:number,
+        _d:number
     }
 }
 class Mysql {

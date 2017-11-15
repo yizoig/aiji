@@ -1,6 +1,6 @@
 ##创建群
 #creater
-insert into groups(group_name,group_type,_c) values (?)
+insert into groups(group_name,group_creater,group_type,_c) values (?)
 
 
 ##修改群信息

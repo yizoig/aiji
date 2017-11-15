@@ -52,11 +52,15 @@ class Interface {
           controller.reqUser = {};
           controller.request = req;
           controller.response = res;
+          let token =req.header('access-token');
+          if(needToken && !token){
+            throw new BaseError(Code.TOKEN_ERR);
+          }
           //needtoken默认为true
-          if (fs.existsSync(APP_PATH + "/Common/jwt.js") && needToken) {
+          if (fs.existsSync(APP_PATH + "/Common/jwt.js")) {
             let { verifyToken = (token) => { } } = require(APP_PATH + "/Common/jwt.js");
-            let user = await verifyToken(req.header('access-token'));
-            controller.reqUser = user;
+            let user = await verifyToken(token);
+            controller.user = user;
           }
           //参数格式化
           let { cb = null, ...params } = Object.assign(

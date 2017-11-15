@@ -28,7 +28,8 @@ Interface.create('/group', GroupController, [
         type: 'string',
         mode: Validate.EXISTS_VALIDATE
       }
-    }
+    },
+    needToken:false
   }),
   /**
    * 创建群

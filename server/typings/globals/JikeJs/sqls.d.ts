@@ -14,7 +14,7 @@ declare let sqls: {
 * 获取登录表信息
 
 */
-        signIn: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, departments.dept_id AS deptId, departments.dept_name AS deptName, _c,_d from accounts join departments on departments.dept_id = accounts.dept_id where account_number = ? and account_pwd = ?",
+        signIn: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, departments.dept_id AS deptId, departments.dept_name AS deptName, _c, _d from accounts join departments on departments.dept_id = accounts.dept_id where account_number = ? and account_pwd = ?",
         /**
 * 删除数据
 
@@ -24,7 +24,12 @@ declare let sqls: {
 * 修改信息
 
 */
-        update: "update accounts set ? where account_id = ?"
+        update: "update accounts set ? where account_id = ?",
+        /**
+* 获取用户基本信息
+
+*/
+        info: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, account_pwd AS password, dept_id AS deptId, _c, _d from accounts where account_id = ?"
     },
     department: {
         /**
@@ -58,7 +63,7 @@ declare let sqls: {
 * 创建群
 
 */
-        creater: "insert into groups(group_name,group_type,_c) values (?)",
+        creater: "insert into groups(group_name,group_creater,group_type,_c) values (?)",
         /**
 * 修改群信息
 
