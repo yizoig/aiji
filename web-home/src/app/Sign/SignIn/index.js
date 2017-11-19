@@ -24,9 +24,9 @@ class SignIn extends React.Component {
       }
       try {
         let data = await AccountApi.signIn(this.props.form.getFieldsValue());
-
+        //保存用户数据
+        localStorage.setItem("userInfo",JSON.stringify(data))
         Toast.success("登录成功");
-
         setTimeout(() => {
           Control.go('/home');
         }, 3000);
@@ -49,7 +49,7 @@ class SignIn extends React.Component {
             <div className="signIn">
               <div className="form-group">
                 <div className="form-item">
-                  <input placeholder="账号" {...getFieldProps('account', {
+                  <input placeholder="学号/教师职工号/管理员帐号" {...getFieldProps('account', {
                     initialValue: "",
                     rules: [{
                       required: true,

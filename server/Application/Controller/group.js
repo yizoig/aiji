@@ -4,9 +4,9 @@ module.exports = class extends JikeJs.Controller {
   /**
    * 获取所有的群
    */
-  async list({ creater, member, page = 1, everyPage = 15, searchKey }) {
+  async list({deptId,type="all", creater, member, page = 1, everyPage = 15, searchKey }) {
 
-    return new GroupModel().list({ creater, member, page: page - 1, everyPage, searchKey });
+    return new GroupModel().list({ deptId,type,creater, member, page: page - 1, everyPage, searchKey });
   }
   /**
    * 创建群

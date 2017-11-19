@@ -4,7 +4,5 @@ import api from '../../config/api'
 import cache from '../cache';
 import base64url from 'base64url';
 export default {
-  signIn: Api.post('/account/signIn'),
-  studentSignUp: Api.post('/student/signUp'),
-  teacherSignUp: Api.post('/teacher/signUp')
+    list: Api.get('/group')
 }

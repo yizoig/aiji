@@ -3,17 +3,19 @@ import { Button } from '../../common';
 import NavBarPage from '../../common/NavBarPage';
 import { Control } from 'react-keeper';
 import { Toast, SegmentedControl, Picker } from 'antd-mobile';
-
-import UserApi from '../../../sources/lib/services/user';
-import DepartmentApi from '../../../sources/lib/services/department';
 import { createForm } from 'rc-form';
+import AccountApi from '../../../sources/lib/services/account';
+import DepartmentApi from '../../../sources/lib/services/department';
+import GroupApi from '../../../sources/lib/services/group';
 export default createForm()(
   class SignUp extends React.Component {
 
     constructor(props) {
       super(props);
       this.state = {
-        depts: []
+        depts: [],
+        classes: [],
+        type: "student"
       }
     }
     onSubmit() {
@@ -30,9 +32,15 @@ export default createForm()(
           Toast.fail("两次密码不一致");
           return;
         }
-        // delete params['repeatPassword'];
+        params['deptId'] = params['deptId'][0];
         try {
-          let data = await UserApi.signUp(params);
+
+          let data;
+          if (this.state.type = "student") {
+            data = await AccountApi.studentSignUp(params);
+          } else {
+            data = await AccountApi.teacherSignUp(params);
+          }
           Toast.success("注册成功");
           setTimeout(() => {
             Control.go('/home');
@@ -45,21 +53,33 @@ export default createForm()(
     }
     async componentWillMount() {
       await this.getDeptList();
+      await this.getGroupList();
     }
     async getDeptList() {
       let { list } = await DepartmentApi.list()
       let depts = [];
       for (let item of list) {
-        let { dept_id, dept_name } = item;
-        depts.push({ value: dept_id, label: dept_name });
+        let { id, name } = item;
+        depts.push({ value: id, label: name });
       }
       this.setState({
         depts
       })
     }
+    async getGroupList({ deptId } = {}) {
+      let { list } = await GroupApi.list({ type: "class", deptId })
+      let classes = [];
+      for (let item of list) {
+        let { id, name } = item;
+        classes.push({ value: id, label: name });
+      }
+      this.setState({
+        classes
+      })
+    }
     render() {
       const { getFieldProps, getFieldError } = this.props.form;
-      const { depts } = this.state;
+      const { depts, classes, type } = this.state;
       return (
         <NavBarPage title="注册"
         >
@@ -67,19 +87,63 @@ export default createForm()(
             <div className="main">
               <div className="form-group">
                 <div className="form-item">
-                  <SegmentedControl values={['学生', '教师']} style={{ width: 200, margin: "0 auto" }} />
+                  <SegmentedControl selectIndex={type == "student" ? 0 : 1} values={['学生', '教师']} style={{ width: 200, margin: "0 auto" }} onValueChange={(value) => {
+                    this.setState({
+                      type: value == "学生" ? "student" : "teacher"
+                    })
+                  }} />
                 </div>
                 <div className="form-item">
-                  <Picker cols={1} data={depts} className="forss" onChange={(value) => {
-
-                    for (let item of depts) {
-                      if(item['value']==value){
-                        this.refs.dept.value = item['label']
+                  <Picker cols={1} data={depts} className="forss"
+                    onOk={async ([value]) => {
+                      console.log(value)
+                      for (let item of depts) {
+                        if (item['value'] == value) {
+                          this.refs.dept.value = item['label']
+                        }
                       }
-                    }
-                  }}>
-                    <input placeholder="请选择学院" ref="dept" />
+                      await this.getGroupList({ deptId: value });
+                    }}
+                    {...getFieldProps('deptId', {
+                      initialValue: [],
+                      rules: [{
+                        required: true,
+                        message: "学院不能为空"
+                      }]
+                    }) }
+                  >
+                    <input placeholder="请选择学院" ref="dept" readOnly />
                   </Picker>
+                </div>
+                <div className="form-item" style={{ display: type == "student" ? "block" : "none" }}>
+                  <Picker cols={1} data={classes} className="forss" disabled={type !== "student"} cascade
+                    onOk={async ([value]) => {
+                      console.log(value)
+                      for (let item of depts) {
+                        if (item['value'] == value) {
+                          this.refs.dept.value = item['label']
+                        }
+                      }
+                      await this.getGroupList({ deptId: value });
+                    }}
+                    {...getFieldProps('classId', {
+                      initialValue: [],
+                      rules: [{
+                        required: true,
+                        message: "班级不能为空"
+                      }]
+                    }) }>
+                    <input placeholder="请选择班级" ref="class" readOnly />
+                  </Picker>
+                </div>
+                <div className="form-item">
+                  <input placeholder="真实姓名" {...getFieldProps('name', {
+                    initialValue: "",
+                    rules: [{
+                      required: true,
+                      message: "姓名不能为空"
+                    }]
+                  }) } />
                 </div>
                 <div className="form-item">
                   <input placeholder="账号" {...getFieldProps('account', {

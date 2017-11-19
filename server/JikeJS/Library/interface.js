@@ -16,7 +16,7 @@ class Interface {
     _app = app;
     //接口文件目录
     let apps = fs.readdirSync(APP_PATH);
-    let InterfacePath = APP_PATH  + '/Interface/';
+    let InterfacePath = APP_PATH + '/Interface/';
     if (fs.statSync(InterfacePath).isDirectory() && fs.existsSync(InterfacePath)) {
       //获取interface目录下的所有文件名
       let files = fs.readdirSync(InterfacePath);
@@ -52,15 +52,17 @@ class Interface {
           controller.reqUser = {};
           controller.request = req;
           controller.response = res;
-          let token =req.header('access-token');
-          if(needToken && !token){
+          let token = req.header('access-token');
+          if (needToken && !token) {
             throw new BaseError(Code.TOKEN_ERR);
           }
           //needtoken默认为true
           if (fs.existsSync(APP_PATH + "/Common/jwt.js")) {
             let { verifyToken = (token) => { } } = require(APP_PATH + "/Common/jwt.js");
-            let user = await verifyToken(token);
-            controller.user = user;
+            if (needToken) {
+              let user = await verifyToken(token);
+              controller.user = user;
+            }
           }
           //参数格式化
           let { cb = null, ...params } = Object.assign(

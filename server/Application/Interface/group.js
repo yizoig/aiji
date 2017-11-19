@@ -8,6 +8,17 @@ Interface.create('/group', GroupController, [
    */
   Route('/', 'get', 'list', {
     verify: {
+      deptId: {
+        type: "number",
+        mode: Validate.EXISTS_VALIDATE,
+      },
+      type: {
+        type: "string",
+        mode: Validate.EXISTS_VALIDATE,
+        rule: [
+          [["all", "class", "group"], "GroupTypeErr", "in"]
+        ]
+      },
       creater: {
         type: "number",
         mode: Validate.EXISTS_VALIDATE
@@ -29,7 +40,7 @@ Interface.create('/group', GroupController, [
         mode: Validate.EXISTS_VALIDATE
       }
     },
-    needToken:false
+    needToken: false
   }),
   /**
    * 创建群

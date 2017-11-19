@@ -3,8 +3,8 @@ module.exports = class extends JikeJs.Model {
   /**
    * 获取所有的群
    */
-  async list({ creater, member, page, everyPage, searchKey }) {
-    let sql = " select groups.group_id id,group_name name,group_creater,group_type,_c,_d from groups ";
+  async list({ deptId,type, creater, member, page, everyPage, searchKey }) {
+    let sql = " select groups.group_id id,group_name name,group_creater creater,group_type AS type,dept_id AS deptId,_c,_d from groups ";
     let totalSql = " select count(*) as total from groups ";
     let whereArr = [];
     let args = [];
@@ -13,6 +13,15 @@ module.exports = class extends JikeJs.Model {
       sql += " left join group_members ON groups.group_id = group_members.group_id ";
       whereArr.push(' (member=?) ');
       args.push(member);
+    }
+    if(type!="all"){
+      whereArr.push('(group_type = ?)');
+      args.push(type);
+    }
+    //获取某学院的群
+    if(deptId){
+      whereArr.push('(dept_id = ?)');
+      args.push(deptId);
     }
     //根据关键字查询id name
     if (searchKey) {

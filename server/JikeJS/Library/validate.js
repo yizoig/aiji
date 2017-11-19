@@ -102,10 +102,7 @@ const Validate = (function () {
    */
   Validate._validateField = (fieldType, fieldKey, fieldVerify, fieldValue) => {
 
-
-  
-   
-    if( fieldType == "number" && fieldValue!=null &&fieldValue!=undefined){
+    if( fieldType == "number" && Object.prototype.toString.call(fieldValue)=="[Object String]" && fieldValue.match(/^([+|-]?\d+\.?\d*)$/g) != null){
       fieldValue = parseInt(fieldValue);
     }
     //1.先验证参数是不是想要的类型
