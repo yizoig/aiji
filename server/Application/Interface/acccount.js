@@ -21,6 +21,18 @@ Interface.create('/account', AccountController, [
     needToken: false
   }),
   /**
+   * 获取基本信息
+   */
+  Route("/info", "get", "info", {
+    verify: {
+      id: {
+        type: "number",
+        mode: Validate.MUST_VALIDATE
+      },
+    },
+    needToken: false
+  }),
+  /**
    * 修改密码
    */
   Route('/setPwd', 'put', 'setPwd', {

@@ -26,10 +26,15 @@ declare let sqls: {
 */
         update: "update accounts set ? where account_id = ?",
         /**
+* 获取用户信息
+
+*/
+        info: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, account_pwd AS password, dept_id AS deptId, _c, _d from accounts where account_id = ?",
+        /**
 * 获取用户基本信息
 
 */
-        info: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, account_pwd AS password, dept_id AS deptId, _c, _d from accounts where account_id = ?"
+        baseInfo: "select account_id as id, account_name AS name, account_gender AS gender, account_type AS type, account_number AS account, departments.dept_id AS deptId, departments.dept_name AS deptName, _c, _d from accounts join departments on departments.dept_id = accounts.dept_id where account_id = ?"
     },
     department: {
         /**

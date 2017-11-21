@@ -23,6 +23,29 @@ interface signIn extends Api {
   }
 }
 /**
+ * 获取基本信息
+ */
+interface baseInfo extends Api{
+  name: "/account/info",
+  method: m.GET,
+  params: {
+    id: Number
+  },
+  return: {
+    data: {
+      id: Number,
+      account: String,//登录帐号
+      name: String,//名称
+      gender: 0 | 1,//性别
+      type: String,
+      deptId: Number,
+      deptName: String
+      _c: TimeStamp//加入时间戳
+      _d: Number
+    }
+  }
+}
+/**
  * 设置密码
  */
 interface setPwd extends Api {

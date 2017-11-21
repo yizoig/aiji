@@ -88,6 +88,7 @@ export default createForm()(
               <div className="form-group">
                 <div className="form-item">
                   <SegmentedControl selectIndex={type == "student" ? 0 : 1} values={['学生', '教师']} style={{ width: 200, margin: "0 auto" }} onValueChange={(value) => {
+                    this.props.form.resetFields();
                     this.setState({
                       type: value == "学生" ? "student" : "teacher"
                     })
@@ -95,13 +96,9 @@ export default createForm()(
                 </div>
                 <div className="form-item">
                   <Picker cols={1} data={depts} className="forss"
+                    extra="请选择学院"
                     onOk={async ([value]) => {
-                      console.log(value)
-                      for (let item of depts) {
-                        if (item['value'] == value) {
-                          this.refs.dept.value = item['label']
-                        }
-                      }
+
                       await this.getGroupList({ deptId: value });
                     }}
                     {...getFieldProps('deptId', {
@@ -112,20 +109,13 @@ export default createForm()(
                       }]
                     }) }
                   >
-                    <input placeholder="请选择学院" ref="dept" readOnly />
+                    <Input />
                   </Picker>
                 </div>
                 <div className="form-item" style={{ display: type == "student" ? "block" : "none" }}>
                   <Picker cols={1} data={classes} className="forss" disabled={type !== "student"} cascade
-                    onOk={async ([value]) => {
-                      console.log(value)
-                      for (let item of depts) {
-                        if (item['value'] == value) {
-                          this.refs.dept.value = item['label']
-                        }
-                      }
-                      await this.getGroupList({ deptId: value });
-                    }}
+                    extra="请选择班级"
+                    onOk={()=>{}}
                     {...getFieldProps('classId', {
                       initialValue: [],
                       rules: [{
@@ -133,7 +123,7 @@ export default createForm()(
                         message: "班级不能为空"
                       }]
                     }) }>
-                    <input placeholder="请选择班级" ref="class" readOnly />
+                    <Input />
                   </Picker>
                 </div>
                 <div className="form-item">
@@ -185,3 +175,9 @@ export default createForm()(
     }
   }
 )
+
+class Input extends React.Component {
+  render() {
+    return <input onClick={this.props.onClick} placeholder={this.props.extra} />
+  }
+}

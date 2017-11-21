@@ -20,6 +20,13 @@ module.exports = class extends JikeJs.Controller {
     return data;
   }
   /**
+   * 获取基本信息
+   */
+  async info({id}){
+    let data = await new AccountModel().info(id);
+    return data;
+  }
+  /**
    * 修改密码
    */
   async setPwd({ id, password }) {

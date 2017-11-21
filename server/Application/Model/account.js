@@ -17,6 +17,18 @@ module.exports = class extends JikeJs.Model {
     return data;
   }
   /**
+   * 获取用户基本信息
+   */
+  async info(id){
+
+    let [data = null] = await this.query(sqls.account.baseInfo, id);
+    if(!data){
+      throw new JikeJs.BaseError(JikeJs.Code['ACCOUNT_NOTEXISTS']);
+    }
+    //根据身份获取信息
+    return data;
+  }
+  /**
    * 修改密码
    */
   async setPwd({ id, password }) {

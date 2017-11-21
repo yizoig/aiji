@@ -1,8 +1,27 @@
 .mine{
-    .info{
+    .info-box{
         text-align: center;
         background: #fff;
-        margin-bottom: 10px;
-        padding: 20px;
+        display: flex;
+        // justify-content: center;
+        align-content: center;
+        .avatar{
+          padding: 20px;
+          display: flex;
+          align-items: center;
+          img{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+          }
+        }
+        .info{
+          text-align: left;
+          padding: 20px 0;
+          .info-item{
+            line-height: 28px;
+            height: 28px;
+          }
+        }
     }
 }
