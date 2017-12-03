@@ -24,7 +24,8 @@ Interface.create('/student', StudentController, [
         type: 'number',
         mode: Validate.EXISTS_VALIDATE
       },
-    }
+    },
+    needToken:false
   }),
   /**
    * 添加学生

@@ -54,7 +54,7 @@ class Interface {
           controller.response = res;
           let token = req.header('access-token');
           if (needToken && !token) {
-            throw new BaseError(Code.TOKEN_ERR);
+            throw new JikeJs.BaseError(JikeJs.Code.TOKEN_ERR);
           }
           //needtoken默认为true
           if (fs.existsSync(APP_PATH + "/Common/jwt.js")) {
