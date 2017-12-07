@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { connect } from 'http2';
 let { Code } = require("../Code/code");
 //获取错误信息和具体描述
 let Mes = {};
@@ -9,9 +10,12 @@ if (fs.existsSync(APP_PATH + "/Common/code.js")) {
 }
 //合并返回码，错误信息和具体描述
 let codeArr = {};
+let content = '';
 for (let key in Code) {
     codeArr[Code[key]] = Mes[key];
+    content += Code[key]+'='+( Mes[key] &&('mes' in Mes[key])?Mes[key]['mes']:'')+'\r\n';
 }
+fs.writeFile(APP_PATH+'/Common/code.conf',content);
 class BaseError extends Error {
     constructor(code, det = "") {
         super(code); // (1)
