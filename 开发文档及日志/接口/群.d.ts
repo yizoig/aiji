@@ -20,7 +20,7 @@ interface list extends Api {
     total:Number,
     list: Array<{
       id: Number,
-      name: Number,
+      name: String,
       creater:String,//创建人
       _c:Number,//创建时间
       type:"class"|"group"
