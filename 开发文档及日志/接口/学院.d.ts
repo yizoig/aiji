@@ -39,6 +39,7 @@ interface creater extends Api {
  */
 interface update extends Api {
   name: '/department/:id',
+  method:m.PUT,
   params: {
     id:Number,//学院id
     name: String, //学院名
@@ -51,6 +52,7 @@ interface update extends Api {
  */
 interface del extends Api {
   name: '/department',
+  method:m.DELETE,
   params: {
     ids: Array<Number>  //需要删除的id
   }

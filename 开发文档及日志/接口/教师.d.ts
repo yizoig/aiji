@@ -34,7 +34,7 @@ interface list extends Api {
  */
 interface creater extends Api {
   name: "/teacher",
-  method: m.GET,
+  method: m.POST,
   params: {
     account: String,//登录帐号
     name?: String,//名称

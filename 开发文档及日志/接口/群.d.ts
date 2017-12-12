@@ -73,8 +73,8 @@ interface del extends Api {
 /**
  * 解散群（创建人）
  */
-interface del extends Api {
-  name: "/group",
+interface dissolve extends Api {
+  name: "/group/dissolve",
   method: m.DELETE,
   params: {
     id:Number,//需要删除的群id
