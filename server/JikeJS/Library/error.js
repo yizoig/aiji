@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { connect } from 'http2';
+import { connect } from 'http';
 let { Code } = require("../Code/code");
 //获取错误信息和具体描述
 let Mes = {};
